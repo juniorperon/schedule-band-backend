@@ -11,6 +11,6 @@ export class Musician {
   @Column()
   email: string;
 
-  @Column('simple-array') // Para armazenar uma lista de instrumentos
+  @Column('simple-array')
   instruments: string[];
 }

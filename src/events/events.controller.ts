@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { EventService } from './events.service';
-import { Event } from './event.entity';
+import { Event } from './entities/event.entity';
 
 @Controller('events')
 export class EventController {

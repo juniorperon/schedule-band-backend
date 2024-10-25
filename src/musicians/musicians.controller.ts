@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { MusicianService } from './musicians.service';
-import { Musician } from './musician.entity';
+import { Musician } from './entities/musician.entity';
 
 @Controller('musician')
 export class MusicianController {
