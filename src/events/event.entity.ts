@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Musician } from '../src/musicians/entities/musician.entity';
+import { Musician } from 'src/musicians/musician.entity';
 
 @Entity()
 export class Event {
@@ -17,5 +17,5 @@ export class Event {
 
   @ManyToMany(() => Musician)
   @JoinTable()
-  musicians: Musician[];
+  musician: Musician[];
 }

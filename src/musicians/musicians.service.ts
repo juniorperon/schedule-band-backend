@@ -1,50 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Musician } from './entities/musician.entity';
+import { Musician } from './musician.entity';
 
 @Injectable()
-export class MusiciansService {
+export class MusicianService {
   constructor(
     @InjectRepository(Musician)
-    private musiciansRepository: Repository<Musician>,
+    private readonly musicianRepository: Repository<Musician>,
   ) {}
 
-  async createMusician(
-    fullName: string,
-    email: string,
-    instruments: string[],
-  ): Promise<Musician> {
-    const musician = this.musiciansRepository.create({
-      fullName,
-      email,
-      instruments,
-    });
-    return this.musiciansRepository.save(musician);
-  }
-
   findAll(): Promise<Musician[]> {
-    return this.musiciansRepository.find();
+    return this.musicianRepository.find();
   }
 
-  async updateMusician(
-    id: number,
-    fullName: string,
-    email: string,
-    instruments: string[],
-  ): Promise<Musician> {
-    const musician = await this.musiciansRepository.findOneBy({ id });
-    if (!musician) {
-      throw new NotFoundException('Musician not found');
-    }
-
-    musician.fullName = fullName;
-    musician.email = email;
-    musician.instruments = instruments;
-    return this.musiciansRepository.save(musician);
+  findOne(id: number): Promise<Musician> {
+    return this.musicianRepository.findOne({ where: { id } });
   }
 
-  async removeMusician(id: number): Promise<void> {
-    await this.musiciansRepository.delete(id);
+  create(musician: Musician): Promise<Musician> {
+    return this.musicianRepository.save(musician);
+  }
+
+  async update(id: number, musician: Musician): Promise<Musician> {
+    await this.musicianRepository.update(id, musician);
+    return this.findOne(id);
+  }
+
+  delete(id: number): Promise<void> {
+    return this.musicianRepository.delete(id).then(() => {});
   }
 }

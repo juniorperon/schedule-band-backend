@@ -2,48 +2,40 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
   Body,
   Param,
+  Delete,
+  Put,
 } from '@nestjs/common';
-import { MusiciansService } from './musicians.service';
+import { MusicianService } from './musicians.service';
+import { Musician } from './musician.entity';
 
-@Controller('musicians')
-export class MusiciansController {
-  constructor(private musiciansService: MusiciansService) {}
-
-  @Post()
-  createMusician(
-    @Body('fullName') fullName: string,
-    @Body('email') email: string,
-    @Body('instruments') instruments: string[],
-  ) {
-    return this.musiciansService.createMusician(fullName, email, instruments);
-  }
+@Controller('musician')
+export class MusicianController {
+  constructor(private readonly musicianService: MusicianService) {}
 
   @Get()
   findAll() {
-    return this.musiciansService.findAll();
+    return this.musicianService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.musicianService.findOne(+id);
+  }
+
+  @Post()
+  create(@Body() musician: Musician) {
+    return this.musicianService.create(musician);
   }
 
   @Put(':id')
-  updateMusician(
-    @Param('id') id: number,
-    @Body('fullName') fullName: string,
-    @Body('email') email: string,
-    @Body('instruments') instruments: string[],
-  ) {
-    return this.musiciansService.updateMusician(
-      id,
-      fullName,
-      email,
-      instruments,
-    );
+  update(@Param('id') id: string, @Body() musician: Musician) {
+    return this.musicianService.update(+id, musician);
   }
 
   @Delete(':id')
-  removeMusician(@Param('id') id: number) {
-    return this.musiciansService.removeMusician(id);
+  remove(@Param('id') id: string) {
+    return this.musicianService.delete(+id);
   }
 }

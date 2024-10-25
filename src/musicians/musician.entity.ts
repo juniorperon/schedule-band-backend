@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Musician {
@@ -8,9 +8,9 @@ export class Musician {
   @Column()
   fullName: string;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
-  @Column('simple-array')
+  @Column('simple-array') // Para armazenar uma lista de instrumentos
   instruments: string[];
 }

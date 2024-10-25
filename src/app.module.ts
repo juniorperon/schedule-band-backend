@@ -1,23 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MusiciansModule } from './musicians/musicians.module';
-import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 3306,
       username: 'root',
-      password: 'password',
-      database: 'band_schedule',
-      autoLoadEntities: true,
+      password: 'root',
+      database: 'musicdb',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     MusiciansModule,
-    AuthModule,
     EventsModule,
   ],
 })

@@ -12,8 +12,8 @@ export class AuthController {
   ) {
     const user = await this.authService.validateUser(email, password);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      // throw new UnauthorizedException('Invalid credentials');
     }
-    return this.authService.login(user);
+    // return this.authService.login(user);
   }
 }

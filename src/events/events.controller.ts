@@ -2,41 +2,40 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
   Body,
   Param,
+  Delete,
+  Put,
 } from '@nestjs/common';
-import { EventsService } from './events.service';
+import { EventService } from './events.service';
+import { Event } from './event.entity';
 
 @Controller('events')
-export class EventsController {
-  constructor(private eventsService: EventsService) {}
-
-  @Post()
-  createEvent(
-    @Body('date') date: string,
-    @Body('musicianIds') musicianIds: number[],
-  ) {
-    return this.eventsService.createEvent(date, musicianIds);
-  }
+export class EventController {
+  constructor(private readonly eventService: EventService) {}
 
   @Get()
   findAll() {
-    return this.eventsService.findAll();
+    return this.eventService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.eventService.findOne(+id);
+  }
+
+  @Post()
+  create(@Body() event: Event) {
+    return this.eventService.create(event);
   }
 
   @Put(':id')
-  updateEvent(
-    @Param('id') id: number,
-    @Body('date') date: string,
-    @Body('musicianIds') musicianIds: number[],
-  ) {
-    return this.eventsService.updateEvent(id, date, musicianIds);
+  update(@Param('id') id: string, @Body() event: Event) {
+    return this.eventService.update(+id, event);
   }
 
   @Delete(':id')
-  removeEvent(@Param('id') id: number) {
-    return this.eventsService.removeEvent(id);
+  remove(@Param('id') id: string) {
+    return this.eventService.delete(+id);
   }
 }

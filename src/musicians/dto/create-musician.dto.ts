@@ -1,1 +1,5 @@
-export class CreateMusicianDto {}
+export class CreateMusicianDto {
+  fullName: string;
+  email: string;
+  instruments: string[];
+}

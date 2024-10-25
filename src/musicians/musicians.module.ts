@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MusiciansService } from './musicians.service';
-import { MusiciansController } from './musicians.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MusicianService } from './musicians.service';
+import { MusicianController } from './musicians.controller';
+import { Musician } from './entities/musician.entity'; // Importe a entidade Musician
 
 @Module({
-  controllers: [MusiciansController],
-  providers: [MusiciansService],
+  imports: [TypeOrmModule.forFeature([Musician])], // Registra o repositório Musician
+  controllers: [MusicianController],
+  providers: [MusicianService],
 })
 export class MusiciansModule {}
