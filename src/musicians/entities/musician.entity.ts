@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Instrument } from 'src/instrument/entities/instrument.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity()
 export class Musician {
@@ -11,6 +18,7 @@ export class Musician {
   @Column()
   email: string;
 
-  @Column('simple-array')
-  instruments: string[];
+  @ManyToMany(() => Instrument, { cascade: true })
+  @JoinTable() // Cria a tabela de relacionamento entre músicos e instrumentos
+  instruments: Instrument[];
 }

@@ -20,8 +20,8 @@ export class MusicianController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.musicianService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.musicianService.findOneWithInstruments(Number(id));
   }
 
   @Post()

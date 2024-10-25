@@ -27,6 +27,13 @@ export class MusicianService {
     return this.findOne(id);
   }
 
+  async findOneWithInstruments(id: number) {
+    return this.musicianRepository.findOne({
+      where: { id },
+      relations: ['instruments'],
+    });
+  }
+
   delete(id: number): Promise<void> {
     return this.musicianRepository.delete(id).then(() => {});
   }
