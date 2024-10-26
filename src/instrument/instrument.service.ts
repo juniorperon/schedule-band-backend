@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Instrument } from './entities/instrument.entity';
+import { Instrument } from '../entities/instrument.entity';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 
 @Injectable()

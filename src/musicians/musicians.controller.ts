@@ -8,7 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { MusicianService } from './musicians.service';
-import { Musician } from './entities/musician.entity';
+import { CreateMusicianDto } from './dto/create-musician.dto';
+import { Musician } from 'src/entities/musician.entity';
 
 @Controller('musician')
 export class MusicianController {
@@ -25,7 +26,7 @@ export class MusicianController {
   }
 
   @Post()
-  create(@Body() musician: Musician) {
+  create(@Body() musician: CreateMusicianDto) {
     return this.musicianService.create(musician);
   }
 

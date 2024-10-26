@@ -2,40 +2,40 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Param,
-  Delete,
   Put,
+  Delete,
+  Param,
+  Body,
 } from '@nestjs/common';
 import { EventService } from './events.service';
-import { Event } from './entities/event.entity';
+import { Event } from '../entities/event.entity';
 
 @Controller('events')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Get()
-  findAll() {
+  findAll(): Promise<Event[]> {
     return this.eventService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<Event> {
+    return this.eventService.findOne(id);
   }
 
   @Post()
-  create(@Body() event: Event) {
+  create(@Body() event: Event): Promise<Event> {
     return this.eventService.create(event);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() event: Event) {
-    return this.eventService.update(+id, event);
+  update(@Param('id') id: number, @Body() event: Event): Promise<Event> {
+    return this.eventService.update(id, event);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventService.delete(+id);
+  delete(@Param('id') id: number): Promise<void> {
+    return this.eventService.delete(id);
   }
 }

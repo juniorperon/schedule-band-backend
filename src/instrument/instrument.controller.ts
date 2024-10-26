@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { InstrumentsService } from './instrument.service';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
-import { Instrument } from './entities/instrument.entity';
+import { Instrument } from '../entities/instrument.entity';
 
 @Controller('instruments')
 export class InstrumentsController {
