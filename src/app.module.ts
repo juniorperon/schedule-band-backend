@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MusiciansModule } from './musicians/musicians.module';
+import { MusicianModule } from './musicians/musicians.module';
 import { EventsModule } from './events/events.module';
 import { InstrumentsModule } from './instrument/instrument.module';
 
@@ -16,7 +16,7 @@ import { InstrumentsModule } from './instrument/instrument.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    MusiciansModule,
+    MusicianModule,
     EventsModule,
     InstrumentsModule,
   ],

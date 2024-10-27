@@ -8,7 +8,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { MusicianService } from './musicians.service';
-import { Musician } from './entities/musician.entity';
+import { CreateMusicianDto } from './dto/create-musician.dto';
+import { Musician } from 'src/entities/musician.entity';
+import { UpdateMusicianDto } from './dto/update-musician.dto';
 
 @Controller('musician')
 export class MusicianController {
@@ -25,12 +27,12 @@ export class MusicianController {
   }
 
   @Post()
-  create(@Body() musician: Musician) {
+  create(@Body() musician: CreateMusicianDto) {
     return this.musicianService.create(musician);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() musician: Musician) {
+  update(@Param('id') id: string, @Body() musician: UpdateMusicianDto) {
     return this.musicianService.update(+id, musician);
   }
 
