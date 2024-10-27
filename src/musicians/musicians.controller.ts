@@ -10,6 +10,7 @@ import {
 import { MusicianService } from './musicians.service';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 import { Musician } from 'src/entities/musician.entity';
+import { UpdateMusicianDto } from './dto/update-musician.dto';
 
 @Controller('musician')
 export class MusicianController {
@@ -31,7 +32,7 @@ export class MusicianController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() musician: Musician) {
+  update(@Param('id') id: string, @Body() musician: UpdateMusicianDto) {
     return this.musicianService.update(+id, musician);
   }
 

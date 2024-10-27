@@ -1,31 +1,20 @@
-import { Musician } from 'src/entities/musician.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Musician } from './musician.entity';
+import { Instrument } from './instrument.entity';
 
-@Entity('event')
+@Entity()
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  date: Date;
+  date: string;
 
-  @ManyToMany(() => Musician, { cascade: true })
-  @JoinTable({
-    name: 'event_musicians',
-    joinColumn: {
-      name: 'event_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'musician_id',
-      referencedColumnName: 'id',
-    },
+  @ManyToOne(() => Musician, (musician) => musician.events, { eager: true })
+  musician: Musician;
+
+  @ManyToOne(() => Instrument, (instrument) => instrument.events, {
+    eager: true,
   })
-  musicians: Musician[];
+  instrument: Instrument;
 }

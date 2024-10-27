@@ -31,4 +31,5 @@ export class Musician {
     },
   })
   instruments: Instrument[];
+  events: any;
 }

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Musician } from '../entities/musician.entity';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 import { Instrument } from 'src/entities/instrument.entity';
+import { UpdateMusicianDto } from './dto/update-musician.dto';
 
 @Injectable()
 export class MusicianService {
@@ -26,7 +27,6 @@ export class MusicianService {
     const musician = new Musician();
     musician.fullName = musicianData.fullName;
     musician.email = musicianData.email;
-    console.log(this.instrumentRepository);
 
     musician.instruments = await this.instrumentRepository.findByIds(
       musicianData.instruments,
@@ -35,9 +35,25 @@ export class MusicianService {
     return this.musicianRepository.save(musician);
   }
 
-  async update(id: number, musician: Musician): Promise<Musician> {
-    await this.musicianRepository.update(id, musician);
-    return this.findOne(id);
+  async update(id: number, musicianData: UpdateMusicianDto): Promise<Musician> {
+    const musician = await this.musicianRepository.findOne({ where: { id } });
+
+    if (!musician) {
+      throw new NotFoundException(`Músico com ID ${id} não encontrado`);
+    }
+
+    musician.fullName = musicianData.fullName;
+    musician.email = musicianData.email;
+
+    if (musicianData.instruments && musicianData.instruments.length > 0) {
+      musician.instruments = await this.instrumentRepository.findByIds(
+        musicianData.instruments,
+      );
+    } else {
+      musician.instruments = [];
+    }
+
+    return this.musicianRepository.save(musician);
   }
 
   async findOneWithInstruments(id: number) {

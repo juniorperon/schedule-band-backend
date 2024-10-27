@@ -1,41 +1,55 @@
 import {
   Controller,
-  Get,
   Post,
+  Get,
   Put,
   Delete,
-  Param,
   Body,
+  Param,
+  NotFoundException,
 } from '@nestjs/common';
 import { EventService } from './events.service';
+import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from '../entities/event.entity';
 
 @Controller('events')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
+  // Criar um novo evento
+  @Post()
+  async create(@Body() createEventDto: CreateEventDto): Promise<Event> {
+    return this.eventService.create(createEventDto);
+  }
+
+  // Listar todos os eventos
   @Get()
-  findAll(): Promise<Event[]> {
+  async findAll(): Promise<Event[]> {
     return this.eventService.findAll();
   }
 
+  // Encontrar um evento por ID
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Event> {
-    return this.eventService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<Event> {
+    const event = await this.eventService.findOne(+id);
+    if (!event) {
+      throw new NotFoundException(`Evento com ID ${id} não encontrado`);
+    }
+    return event;
   }
 
-  @Post()
-  create(@Body() event: Event): Promise<Event> {
-    return this.eventService.create(event);
-  }
-
+  // Atualizar um evento
   @Put(':id')
-  update(@Param('id') id: number, @Body() event: Event): Promise<Event> {
-    return this.eventService.update(id, event);
+  async update(
+    @Param('id') id: string,
+    @Body() updateEventDto: CreateEventDto,
+  ): Promise<Event> {
+    return this.eventService.update(+id, updateEventDto);
   }
 
+  // Deletar um evento
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<void> {
-    return this.eventService.delete(id);
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.eventService.remove(+id);
   }
 }

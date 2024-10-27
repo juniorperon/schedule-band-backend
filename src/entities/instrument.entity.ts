@@ -11,4 +11,5 @@ export class Instrument {
 
   @ManyToMany(() => Musician, (musician) => musician.instruments)
   musicians: Musician[];
+  events: any;
 }
