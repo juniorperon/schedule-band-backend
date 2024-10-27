@@ -17,4 +17,11 @@ export class Event {
     eager: true,
   })
   instrument: Instrument;
+
+  // Adicionando os IDs como colunas explícitas
+  @Column({ nullable: true })
+  musicianId: number;
+
+  @Column({ nullable: true })
+  instrumentId: number;
 }
