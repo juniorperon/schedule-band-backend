@@ -22,6 +22,16 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Checklist
+
+- Crud Musicos
+- Crud Instrumentos
+- Crud Eventos
+- Cadastro User
+- Login com tratativa de erro de senha e email
+- Senha criptografada
+- autenticação token JWT(ainda não protegi as rotas)
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
