@@ -1,4 +1,3 @@
-// src/entities/event.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Instrument } from './instrument.entity';
 import { Musician } from './musician.entity';

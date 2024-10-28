@@ -1,12 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
-import { Musician } from './musician.entity';
-import { Event } from './event.entity'; // Importar a entidade Event
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Event } from './event.entity';
 
 @Entity()
 export class Instrument {
@@ -16,13 +9,6 @@ export class Instrument {
   @Column()
   name: string;
 
-  // // Relacionamento com Musician (um instrumento pertence a um músico)
-  // @ManyToOne(() => Musician, (musician) => musician.instruments, {
-  //   onDelete: 'CASCADE',
-  // })
-  // musician: Musician;
-
-  // Relacionamento com Event (um instrumento pode ser usado em vários eventos)
   @OneToMany(() => Event, (event) => event.instrument)
   events: Event[];
 }
