@@ -22,7 +22,6 @@ export class Musician {
   @Column()
   email: string;
 
-  // Relacionamento com a entidade User (caso seja necessário)
   // @ManyToOne(() => User, (user) => user.musicians)
   // user: User;
 
@@ -40,7 +39,6 @@ export class Musician {
   })
   instruments: Instrument[];
 
-  // Relacionamento OneToMany com a entidade Event (um músico pode participar de vários eventos)
   @OneToMany(() => Event, (event) => event.musician)
   events: Event[];
 }

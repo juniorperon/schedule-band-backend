@@ -1,8 +1,9 @@
+// src/entities/event.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Instrument } from './instrument.entity';
 import { Musician } from './musician.entity';
 
-@Entity()
+@Entity('event')
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,11 +11,13 @@ export class Event {
   @Column()
   date: string;
 
-  // Relacionamento com Musician (um evento pode ter um músico)
-  @ManyToOne(() => Musician, (musician) => musician.events)
-  musician: Musician;
-
-  // Relacionamento com Instrument (um evento pode ter um instrumento)
-  @ManyToOne(() => Instrument, (instrument) => instrument.events)
+  @ManyToOne(() => Instrument, (instrument) => instrument.events, {
+    onDelete: 'CASCADE',
+  })
   instrument: Instrument;
+
+  @ManyToOne(() => Musician, (musician) => musician.events, {
+    onDelete: 'CASCADE',
+  })
+  musician: Musician;
 }

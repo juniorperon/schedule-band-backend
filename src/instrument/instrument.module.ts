@@ -5,10 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { InstrumentsController } from './instrument.controller';
 import { InstrumentsService } from './instrument.service';
 import { Instrument } from '../entities/instrument.entity';
-import { MusicianModule } from 'src/musicians/musicians.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Instrument]), MusicianModule],
+  imports: [TypeOrmModule.forFeature([Instrument])],
   controllers: [InstrumentsController],
   providers: [InstrumentsService],
   exports: [TypeOrmModule],
