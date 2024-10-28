@@ -1,11 +1,13 @@
 import { Instrument } from 'src/entities/instrument.entity';
+import { Event } from 'src/entities/event.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
   JoinTable,
   ManyToMany,
-  ManyToOne,
 } from 'typeorm';
 // import { User } from './user.entity';
 
@@ -20,6 +22,7 @@ export class Musician {
   @Column()
   email: string;
 
+  // Relacionamento com a entidade User (caso seja necessário)
   // @ManyToOne(() => User, (user) => user.musicians)
   // user: User;
 
@@ -36,5 +39,8 @@ export class Musician {
     },
   })
   instruments: Instrument[];
-  events: any;
+
+  // Relacionamento OneToMany com a entidade Event (um músico pode participar de vários eventos)
+  @OneToMany(() => Event, (event) => event.musician)
+  events: Event[];
 }
