@@ -16,11 +16,11 @@ export class Instrument {
   @Column()
   name: string;
 
-  // Relacionamento com Musician (um instrumento pertence a um músico)
-  @ManyToOne(() => Musician, (musician) => musician.instruments, {
-    onDelete: 'CASCADE',
-  })
-  musician: Musician;
+  // // Relacionamento com Musician (um instrumento pertence a um músico)
+  // @ManyToOne(() => Musician, (musician) => musician.instruments, {
+  //   onDelete: 'CASCADE',
+  // })
+  // musician: Musician;
 
   // Relacionamento com Event (um instrumento pode ser usado em vários eventos)
   @OneToMany(() => Event, (event) => event.instrument)
