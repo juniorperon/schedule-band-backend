@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Musician } from './musician.entity';
 
 @Entity()
 export class Event {
@@ -7,11 +7,14 @@ export class Event {
   id: number;
 
   @Column()
-  title: string;
+  date: string;
 
-  // @ManyToOne(() => User, (user) => user.event)
-  // user: User;
-
-  // @Column()
-  // userId: number;
+  @ManyToOne(() => Musician, (musician) => musician.events, { eager: true })
+  musician: Musician;
 }
+
+// @ManyToOne(() => User, (user) => user.event)
+// user: User;
+
+// @Column()
+// userId: number;

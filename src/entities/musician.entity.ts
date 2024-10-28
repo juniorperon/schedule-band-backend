@@ -7,7 +7,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from 'typeorm';
-import { User } from './user.entity';
+// import { User } from './user.entity';
 
 @Entity('musician')
 export class Musician {

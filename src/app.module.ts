@@ -22,7 +22,7 @@ import { AuthModule } from './auth/auth.module';
     EventsModule,
     InstrumentsModule,
     UserModule,
-    AuthModule,
+    // AuthModule,
   ],
 })
 export class AppModule {}
