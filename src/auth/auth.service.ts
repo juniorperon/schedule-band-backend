@@ -1,27 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../user/user.service';
+import { User } from '../entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(loginDto: LoginDto): Promise<any> {
-    const { email, password } = loginDto;
-    const user = await this.userService.findOneByEmail(email);
+  async login(loginDto: LoginDto): Promise<{ token: string }> {
+    const user = await this.userRepository.findOne({
+      where: { email: loginDto.email },
+    });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      const token = this.jwtService.sign({
-        email: result.email,
-        sub: result.id,
-      });
-      return { ...result, token };
+    if (!user) {
+      throw new Error('Usuário não encontrado');
     }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new Error('Senha inválida');
+    }
+
+    const token = this.jwtService.sign({ id: user.id });
+    return { token };
   }
 }
