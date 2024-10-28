@@ -1,6 +1,5 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Musician } from './musician.entity';
-import { Instrument } from './instrument.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Event {
@@ -8,20 +7,11 @@ export class Event {
   id: number;
 
   @Column()
-  date: string;
+  title: string;
 
-  @ManyToOne(() => Musician, (musician) => musician.events, { eager: true })
-  musician: Musician;
+  @ManyToOne(() => User, (user) => user.event)
+  user: User;
 
-  @ManyToOne(() => Instrument, (instrument) => instrument.events, {
-    eager: true,
-  })
-  instrument: Instrument;
-
-  // Adicionando os IDs como colunas explícitas
-  @Column({ nullable: true })
-  musicianId: number;
-
-  @Column({ nullable: true })
-  instrumentId: number;
+  @Column()
+  userId: number;
 }

@@ -1,44 +1,27 @@
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Request,
-  Injectable,
-} from '@nestjs/common';
-// import { JwtAuthGuard } from './jwt-auth.guard';
+import { Injectable } from '@nestjs/common';
+import { UsersService } from '../user/user.service';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-// import { UsersService } from 'src/users/users.service';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    // private usersService: UsersService,
+    private userService: UsersService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    // const user = await this.usersService.findByEmail(email);
-    // if (user && user.password === password) {
-    // const { password, ...result } = user;
-    // return result;
+  async validateUser(loginDto: LoginDto): Promise<any> {
+    const { email, password } = loginDto;
+    const user = await this.userService.findOneByEmail(email);
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const { password, ...result } = user;
+      const token = this.jwtService.sign({
+        email: result.email,
+        sub: result.id,
+      });
+      return { ...result, token };
+    }
   }
-  // return null;
 }
-
-//   async login(user: any) {
-//     const payload = { username: user.email, sub: user.id };
-//     return {
-//       access_token: this.jwtService.sign(payload),
-//     };
-//   }
-// }
-
-// @Controller('auth')
-// export class AuthController {
-//   // Nova rota para validar o token
-//   @UseGuards(JwtAuthGuard)
-//   @Get('validate-token')
-//   validateToken(@Request() req) {
-//     return { message: 'Token is valid' };
-// }
-// }

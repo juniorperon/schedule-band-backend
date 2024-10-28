@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { MusicianService } from './musicians.service';
 import { CreateMusicianDto } from './dto/create-musician.dto';
-import { Musician } from 'src/entities/musician.entity';
 import { UpdateMusicianDto } from './dto/update-musician.dto';
 
 @Controller('musician')

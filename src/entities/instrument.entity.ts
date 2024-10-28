@@ -1,7 +1,7 @@
-import { Musician } from 'src/entities/musician.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
 
-@Entity('instrument')
+@Entity()
 export class Instrument {
   @PrimaryGeneratedColumn()
   id: number;
@@ -9,7 +9,9 @@ export class Instrument {
   @Column()
   name: string;
 
-  @ManyToMany(() => Musician, (musician) => musician.instruments)
-  musicians: Musician[];
-  events: any;
+  @ManyToOne(() => User, (user) => user.instrument) // Associa o Instrument ao User
+  user: User;
+
+  @Column()
+  userId: number; // Adiciona o userId
 }
