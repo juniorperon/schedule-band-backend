@@ -1,27 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../user/user.service';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+  Logger,
+} from '@nestjs/common';
+import { User } from '../entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
-
-  async validateUser(loginDto: LoginDto): Promise<any> {
-    const { email, password } = loginDto;
-    const user = await this.userService.findOneByEmail(email);
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      const token = this.jwtService.sign({
-        email: result.email,
-        sub: result.id,
+  private readonly logger = new Logger(AuthService.name);
+  async login(loginDto: LoginDto): Promise<{ token: string }> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { email: loginDto.email },
       });
-      return { ...result, token };
+      if (!user) {
+        throw new NotFoundException('Usuário não encontrado');
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        loginDto.password,
+        user.password,
+      );
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Senha inválida');
+      }
+
+      const token = this.jwtService.sign({ id: user.id });
+      return { token };
+    } catch (error) {
+      this.logger.error(
+        `Erro ao realizar login: ${error.message}`,
+        error.stack,
+      );
+      if (
+        error instanceof NotFoundException ||
+        error instanceof UnauthorizedException
+      ) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Erro ao realizar login'); // Para erros desconhecidos
     }
   }
 }
