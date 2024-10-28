@@ -14,12 +14,12 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Musician, (musician) => musician.user)
-  musicians: Musician[];
+  // @OneToMany(() => Musician, (musician) => musician.user)
+  // musicians: Musician[];
 
-  @OneToMany(() => Instrument, (instrument) => instrument.user)
-  instrument: Instrument[];
+  // @OneToMany(() => Instrument, (instrument) => instrument.user)
+  // instrument: Instrument[];
 
-  @OneToMany(() => Event, (event) => event.user)
-  event: Event[];
+  // @OneToMany(() => Event, (event) => event.user)
+  // event: Event[];
 }

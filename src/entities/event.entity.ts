@@ -9,8 +9,8 @@ export class Event {
   @Column()
   title: string;
 
-  @ManyToOne(() => User, (user) => user.event)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.event)
+  // user: User;
 
   @Column()
   userId: number;

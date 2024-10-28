@@ -20,8 +20,8 @@ export class Musician {
   @Column()
   email: string;
 
-  @ManyToOne(() => User, (user) => user.musicians)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.musicians)
+  // user: User;
 
   @ManyToMany(() => Instrument, { cascade: true })
   @JoinTable({
