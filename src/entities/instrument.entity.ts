@@ -9,9 +9,9 @@ export class Instrument {
   @Column()
   name: string;
 
-  // @ManyToOne(() => User, (user) => user.instrument) // Associa o Instrument ao User
+  // @ManyToOne(() => User, (user) => user.instrument)
   // user: User;
 
-  @Column()
-  userId: number; // Adiciona o userId
+  // @Column()
+  // userId: number;
 }

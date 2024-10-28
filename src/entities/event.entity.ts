@@ -12,6 +12,6 @@ export class Event {
   // @ManyToOne(() => User, (user) => user.event)
   // user: User;
 
-  @Column()
-  userId: number;
+  // @Column()
+  // userId: number;
 }
