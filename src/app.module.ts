@@ -5,6 +5,9 @@ import { EventsModule } from './events/events.module';
 import { InstrumentsModule } from './instrument/instrument.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { AuthModule } from './auth/auth.module';
     InstrumentsModule,
     UserModule,
     AuthModule,
+    ConfigModule,
   ],
+  controllers: [AppController],
+  providers: [AppService, ConfigService],
 })
 export class AppModule {}

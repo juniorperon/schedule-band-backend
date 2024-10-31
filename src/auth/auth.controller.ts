@@ -1,13 +1,29 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto, SignUpDto } from './dto/auth.dto';
+import { Public } from './decorators/isPublic';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
+  @Public()
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  signIn(@Body() signInDto: LoginDto) {
+    return this.authService.signIn(signInDto);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('signUp')
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  refreshAuth(@Body() token: any) {
+    return this.authService.reauthenticateSession(token);
   }
 }
