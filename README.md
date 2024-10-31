@@ -61,8 +61,11 @@ $ yarn run start:prod
 
 ## Setup to create tables
 
+(no Banco)
 - Criar db mySQL com nome musicdb
+- CREATE DATABASE musicdb; 
 
+(no codigo)
 - configurar banco no arquivo app.module.ts
       type: 'mysql',
       host: '127.0.0.1',
@@ -71,4 +74,5 @@ $ yarn run start:prod
       password: 'root',
       database: 'musicdb',
 
+(no terminal do codigo)
 - yarn start ele deve gerar as tabelas automaticamente se estiver com a conexão corretamente
