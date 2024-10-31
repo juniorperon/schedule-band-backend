@@ -22,6 +22,10 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Versão node
+
+18.19.0
+
 ## Checklist
 
 - Crud Musicos
@@ -30,7 +34,7 @@
 - Cadastro User
 - Login com tratativa de erro de senha e email
 - Senha criptografada
-- autenticação token JWT(ainda não protegi as rotas)
+- autenticação token JWT
 
 ## Description
 
@@ -54,3 +58,17 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
+
+## Setup to create tables
+
+- Criar db mySQL com nome musicdb
+
+- configurar banco no arquivo app.module.ts
+      type: 'mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'musicdb',
+
+- yarn start ele deve gerar as tabelas automaticamente se estiver com a conexão corretamente

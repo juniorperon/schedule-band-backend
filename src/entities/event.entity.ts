@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Instrument } from './instrument.entity';
 import { Musician } from './musician.entity';
+import { User } from './user.entity';
 
 @Entity('event')
 export class Event {
@@ -8,7 +9,16 @@ export class Event {
   id: number;
 
   @Column()
+  title:string;
+
+  @Column()
+  local:string;
+
+  @Column()
   date: string;
+
+  @ManyToOne(() => User, (user) => user.musicians)
+  user: User;
 
   @ManyToOne(() => Instrument, (instrument) => instrument.events, {
     onDelete: 'CASCADE',

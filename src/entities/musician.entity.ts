@@ -7,8 +7,9 @@ import {
   OneToMany,
   JoinTable,
   ManyToMany,
+  ManyToOne,
 } from 'typeorm';
-// import { User } from './user.entity';
+import { User } from './user.entity';
 
 @Entity('musician')
 export class Musician {
@@ -21,8 +22,8 @@ export class Musician {
   @Column()
   email: string;
 
-  // @ManyToOne(() => User, (user) => user.musicians)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.musicians)
+  user: User;
 
   @ManyToMany(() => Instrument, { cascade: true })
   @JoinTable({
