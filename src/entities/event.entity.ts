@@ -9,13 +9,13 @@ export class Event {
   id: number;
 
   @Column()
-  title:string;
-
-  @Column()
-  local:string;
-
-  @Column()
   date: string;
+
+  @Column()
+  title: string;
+
+  @Column()
+  local: string;
 
   @ManyToOne(() => User, (user) => user.musicians)
   user: User;

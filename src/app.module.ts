@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -21,6 +24,10 @@ import { AppService } from './app.service';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    JwtModule.register({
+      secret: 'secret', // Certifique-se de usar uma variável de ambiente
+      signOptions: { expiresIn: '1h' },
+    }),
     MusicianModule,
     EventsModule,
     InstrumentsModule,
@@ -29,6 +36,9 @@ import { AppService } from './app.service';
     ConfigModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService],
+  providers: [AppService, ConfigService, {
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+  },],
 })
 export class AppModule {}
