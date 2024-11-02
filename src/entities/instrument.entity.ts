@@ -10,7 +10,7 @@ export class Instrument {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.musicians)
+  @ManyToOne(() => User, (user) => user.instrument)
   user: User;
 
   @OneToMany(() => Event, (event) => event.instrument)

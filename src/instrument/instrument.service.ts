@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Instrument } from '../entities/instrument.entity';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Injectable()
 export class InstrumentsService {
@@ -13,28 +14,35 @@ export class InstrumentsService {
     private readonly instrumentRepository: Repository<Instrument>,
   ) {}
 
-  async create(createInstrumentDto: CreateInstrumentDto): Promise<Instrument> {
-    const instrument = this.instrumentRepository.create(createInstrumentDto);
+  async create(createInstrumentDto: CreateInstrumentDto, user: CreateUserDto): Promise<Instrument> {
+    const instrument = this.instrumentRepository.create({...createInstrumentDto, user});
     return this.instrumentRepository.save(instrument);
   }
 
-  async findAll(): Promise<Instrument[]> {
-    return this.instrumentRepository.find();
+  async findAll(user:CreateUserDto): Promise<Instrument[]> {
+    console.log(user);
+    const userId = user.id;
+    return this.instrumentRepository.find({where: {
+      user:{id:userId}
+    }
+    });
   }
 
-  async findOne(id: number): Promise<Instrument> {
-    return this.instrumentRepository.findOneBy({ id });
+  async findOne(id: number, user: CreateUserDto): Promise<Instrument> {
+    const userId = user.id;
+    return this.instrumentRepository.findOneBy({ id, user:{id:userId} });
   }
 
   async update(
     id: number,
     updateInstrumentDto: CreateInstrumentDto,
+    user:CreateUserDto
   ): Promise<Instrument> {
     await this.instrumentRepository.update(id, updateInstrumentDto);
-    return this.findOne(id);
+    return this.findOne(id,user);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.instrumentRepository.delete(id);
+  async remove(id: number, user:CreateUserDto): Promise<void> {
+    await this.instrumentRepository.delete({id,user});
   }
 }
