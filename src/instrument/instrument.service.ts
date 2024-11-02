@@ -20,7 +20,6 @@ export class InstrumentsService {
   }
 
   async findAll(user:CreateUserDto): Promise<Instrument[]> {
-    console.log(user);
     const userId = user.id;
     return this.instrumentRepository.find({where: {
       user:{id:userId}

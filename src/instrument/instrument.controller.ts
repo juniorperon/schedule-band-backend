@@ -31,7 +31,7 @@ export class InstrumentsController {
   }
 
   @Get()
-  asyncfindAll(@Req() req): Promise<Instrument[]> {
+  async findAll(@Req() req): Promise<Instrument[]> {
     const user = req.user
     return this.instrumentsService.findAll(user);
   }
