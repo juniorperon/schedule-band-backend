@@ -22,7 +22,7 @@ export class Musician {
   @Column()
   email: string;
 
-  @ManyToOne(() => User, (user) => user.musicians)
+  @ManyToOne(() => User, (user) => user.instrument)
   user: User;
 
   @ManyToMany(() => Instrument, { cascade: true })

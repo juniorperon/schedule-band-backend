@@ -6,28 +6,36 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { MusicianService } from './musicians.service';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 import { UpdateMusicianDto } from './dto/update-musician.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Musician } from 'src/entities/musician.entity';
+
 
 @Controller('musician')
+@UseGuards(AuthGuard)
 export class MusicianController {
   constructor(private readonly musicianService: MusicianService) {}
 
+  @Post()
+  async create(@Body() musician: CreateMusicianDto, @Req() req):Promise<Musician> {
+    const userId = req.user.id;
+    return this.musicianService.create(musician, userId);
+  }
+
   @Get()
-  findAll() {
-    return this.musicianService.findAll();
+  async findAll(@Req() req) {
+    const user = req.user;
+    return this.musicianService.findAll(user);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.musicianService.findOneWithInstruments(Number(id));
-  }
-
-  @Post()
-  create(@Body() musician: CreateMusicianDto) {
-    return this.musicianService.create(musician);
   }
 
   @Put(':id')
