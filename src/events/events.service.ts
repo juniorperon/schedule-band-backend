@@ -1,65 +1,52 @@
-// src/events/events.service.ts
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from '../entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
-import { Musician } from '../entities/musician.entity';
-import { Instrument } from '../entities/instrument.entity';
 
 @Injectable()
 export class EventService {
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
-    @InjectRepository(Musician)
-    private readonly musicianRepository: Repository<Musician>,
-    @InjectRepository(Instrument)
-    private readonly instrumentRepository: Repository<Instrument>,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<Event> {
-    const { musicianId, instrumentId, date } = createEventDto;
-
-    // Verifique se o músico e o instrumento existem
-    const musician = await this.musicianRepository.findOneBy({
-      id: musicianId,
-    });
-    const instrument = await this.instrumentRepository.findOneBy({
-      id: instrumentId,
-    });
-
-    if (!musician || !instrument) {
-      throw new Error('Musician or Instrument not found');
-    }
-
-    // Crie o evento com os dados fornecidos
-    const event = this.eventRepository.create({
-      date,
-      musician,
-      instrument,
-    });
+  async create(createEventDto: CreateEventDto, user:number): Promise<Event> {
+    const event = new Event();
+    event.title = createEventDto.title;
+    event.local = createEventDto.local;
+    event.date = createEventDto.date;
+    event.musician = {id:createEventDto.musicianId} as any
+    event.instrument = {id:createEventDto.instrumentId} as any
+    event.user = {id:user} as any
 
     return this.eventRepository.save(event);
   }
 
-  async findAll(): Promise<Event[]> {
-    return this.eventRepository.find({ relations: ['musician', 'instrument'] });
-  }
-
-  async findOne(id: number): Promise<Event> {
-    return this.eventRepository.findOne({
-      where: { id },
-      relations: ['musician', 'instrument'],
+  async findAll(userId: number): Promise<Event[]> {
+    return this.eventRepository.find({
+      where: { user: { id: userId } },relations:['musician','instrument'],
     });
   }
 
-  async update(id: number, updateEventDto: CreateEventDto): Promise<Event> {
-    await this.eventRepository.update(id, updateEventDto);
-    return this.findOne(id);
+  async findOne(id: number, userId: number): Promise<Event> {
+    const event = await this.eventRepository.findOne({
+      where: { id, user: { id: userId } },
+    });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return event;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.eventRepository.delete(id);
+  async update(id: number, updateEventDto: CreateEventDto, userId: number): Promise<Event> {
+    const event = await this.findOne(id, userId);
+    Object.assign(event, updateEventDto);
+    return this.eventRepository.save(event);
+  }
+
+  async remove(id: number, userId: number): Promise<void> {
+    const event = await this.findOne(id, userId);
+    await this.eventRepository.remove(event);
   }
 }
