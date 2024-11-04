@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-// import { Musician } from './musician.entity';
-// import { Instrument } from './instrument.entity';
-// import { Event } from './event.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Musician } from './musician.entity';
+import { Instrument } from './instrument.entity';
+import { Event } from './event.entity';
 
 @Entity()
 export class User {
@@ -14,12 +14,12 @@ export class User {
   @Column()
   password: string;
 
-  // @OneToMany(() => Musician, (musician) => musician.user)
-  // musicians: Musician[];
+  @OneToMany(() => Musician, (musician) => musician.user)
+  musicians: Musician[];
 
-  // @OneToMany(() => Instrument, (instrument) => instrument.user)
-  // instrument: Instrument[];
+  @OneToMany(() => Instrument, (instrument) => instrument.user)
+  instrument: Instrument[];
 
-  // @OneToMany(() => Event, (event) => event.user)
-  // event: Event[];
+  @OneToMany(() => Event, (event) => event.user)
+  event: Event[];
 }

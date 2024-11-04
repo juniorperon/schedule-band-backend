@@ -1,4 +1,4 @@
 export class CreateInstrumentDto {
   name: string;
-  // userId: number;
+  userId: number;
 }
