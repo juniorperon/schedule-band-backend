@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from '../entities/event.entity';
@@ -12,6 +12,15 @@ export class EventService {
   ) {}
 
   async create(createEventDto: CreateEventDto, user:number): Promise<Event> {
+    const { musicianId, date } = createEventDto;
+    const existingEvent = await this.eventRepository.findOne({
+      where: { musician: { id: musicianId }, date },
+    });
+
+    if (existingEvent) {
+      throw new ConflictException('O musico ja esta nessa registrado nessa data.');
+    }
+
     const event = new Event();
     event.title = createEventDto.title;
     event.local = createEventDto.local;
