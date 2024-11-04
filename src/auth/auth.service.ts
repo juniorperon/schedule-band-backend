@@ -88,10 +88,8 @@ export class AuthService {
   }
 
   async reauthenticateSession({ refreshToken }: any): Promise<any> {
-    //1 - (SEGURANÇA) Validar SE o Token recebido existe
     const payload = await this.validateRefreshToken(refreshToken);
 
-    //2 - Gerar um novo Token
     return await this.generateToken(payload);
   }
 
